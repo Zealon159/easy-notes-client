@@ -1,26 +1,26 @@
 <template>
     <a-layout id="components-layout-title" style="min-height: 100vh;">
-        <a-layout-sider theme="light">
+        <a-layout-sider theme="light" width="230" :collapsed="collapsed" collapsedWidth="0">
+            <!--分类信息-->
+            <a-statistic :title="category.name" :value="notesCount" style="margin:15px 0px 0px 15px" suffix="条笔记"/>
+            <a-divider style=" margin:15px 0px 0px 0px; "/>
 
-        <!--分类信息-->
-        <a-statistic :title="category.name" :value="notesCount" style="margin:15px 0px 0px 15px" suffix="条笔记"/>
-        <a-divider style=" margin:15px 0px 0px 0px; "/>
-
-        <!--标题列表-->
-        <div style="height:600px;overflow:auto; margin:0px">
-            <a-list size="small" theme="light">
-                <a-list-item class="title" v-for="(item,index) in notesList" :index="index+''" :key="index">
-                    <a @click="loadNotesInfo(item.id)">{{item.title}}</a>
-                </a-list-item>
-            </a-list>
-        </div>
-        </a-layout-sider>
-        <a-layout-content style="margin: 0 16px">
-            <div style="margin: 16px 0">
-                {{notes.title}}
+            <!--笔记列表-->
+            <div style="height:600px;overflow:auto; margin:0px">
+                <a-list size="small" theme="light">
+                    <a-list-item class="title" v-for="(item,index) in notesList" :index="index+''" :key="index">
+                        <a @click="loadNotesInfo(item.id)">{{item.title}}</a>
+                    </a-list-item>
+                </a-list>
             </div>
-            <div :style="{ padding: '24px', background: '#fff', minHeight: '460px' }">
-                {{notes.content}}
+        </a-layout-sider>
+
+        <!-- 笔记编辑器 -->
+        <a-layout-content style="margin: 0 16px">
+            <div>
+                <editor :notes="notes" 
+                @updateTitle="reShowUpdateTitle"
+                @removeNotes="removeNotes"></editor>
             </div>
         </a-layout-content>
 
@@ -34,6 +34,8 @@
 </template>
 
 <script>
+    // 引入Editor组件
+    import editor from '@/components/editor'
     export default {
         data() {
             return {
@@ -41,8 +43,12 @@
                 notesList:[],
                 notes:{},
                 notesCount:0,
-                category:{}
+                category:{},
+                type:''
             };
+        },
+        components: {
+            editor
         },
         created() {
             this.loadNotesList()
@@ -101,6 +107,24 @@
                         this.category = resp.data;
                     }
                 })
+            },
+            // 重新加载修改的笔记标题
+            reShowUpdateTitle(id, title){
+                for(let i=0;i<this.notesList.length;i++){
+                    if(this.notesList[i].id==id){
+                        this.notesList[i].title = title
+                        break;
+                    }
+                }
+            },
+            removeNotes(id){
+                let notesList = this.notesList.filter(note => note.id !== id);
+                this.notesList = notesList;
+                if(notesList.length>0){
+                    this.loadNotesInfo(notesList[0].id);
+                } else {
+                    // todo 空
+                }
             }
         }
     };
@@ -108,7 +132,7 @@
 
 <style>
     .title{
-        padding-left:10px;height:36px
+        padding-left:10px;
     }
 
     .title a {

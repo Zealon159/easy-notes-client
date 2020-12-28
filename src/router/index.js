@@ -10,9 +10,7 @@ const register = r => require.ensure([], () => r(require('@/pages/register')), '
 const oauth2Register = r => require.ensure([], () => r(require('@/pages/oauth2-register')), 'oauth2Register');
 const oauth2Callback = r => require.ensure([], () => r(require('@/pages/oauth2-callback')), 'oauth2Callback');
 const login = r => require.ensure([], () => r(require('@/pages/login')), 'login');
-
 const notesList = r => require.ensure([], () => r(require('@/pages/home/notes-list')), 'notesList');
-//const editor = r => require.ensure([], () => r(require('@/pages/editor')), 'editor');
 
 // 路由配置
 const routes = [
