@@ -5,7 +5,7 @@ module.exports = {
       proxy: {
           "/api": {
               //请求源地址
-              target: 'http://localhost:8080',
+              target: 'http://localhost:8010',
               //是否跨域
               changeOrigin: true,  
               ws: true,

@@ -44,6 +44,11 @@
     import 'mavon-editor/dist/css/index.css'
     Vue.use(mavonEditor)
     export default {
+        data(){
+            return{
+                token: this.db.get("USER").token
+            }
+        },
         props: {
             notes: {}
         },
@@ -74,7 +79,7 @@
                     title: this.notes.title,
                     content: this.notes.content
                 }
-                this.postRequest('/notes/update', dataForm).then(resp => {
+                this.postRequest('/notes/update', dataForm, {"JWTHeaderName":this.token}).then(resp => {
                     if (resp && resp.code==200) {
                         this.$message.success(resp.msg);
                         // 回传给父组件更新的标题
@@ -90,7 +95,7 @@
                     id: id,
                     delete: 1
                 }
-                postRequest('/notes/update', dataForm).then(resp => {
+                postRequest('/notes/update', dataForm, {"JWTHeaderName":this.token}).then(resp => {
                     if (resp && resp.code==200) {
                         // 回传给父组件
                         this.$emit('removeNotes', id);
@@ -108,7 +113,7 @@
                     id: id,
                     star: star
                 }
-                postRequest('/notes/update', dataForm).then(resp => {
+                postRequest('/notes/update', dataForm, {"JWTHeaderName":this.token}).then(resp => {
                     if (resp && resp.code==200) {
                         // 回传给父组件
                         this.$emit('updateNotes', this.notes);

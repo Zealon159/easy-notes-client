@@ -26,12 +26,11 @@
         </a-tag>
     </div>
 </template>
-
-
 <script>
     export default {
         data() {
             return {
+                token: this.db.get("USER").token,
                 inputVisible: false,
                 inputValue: ''
             }
@@ -46,8 +45,7 @@
                     id: this.notes.id,
                     tags: this.notes.tags
                 }
-                console.log(dataForm)
-                this.postRequest('/notes/update-tags', dataForm).then(resp => {
+                this.postRequest('/notes/update-tags', dataForm, {"JWTHeaderName":this.token}).then(resp => {
                     if (resp && resp.code==200) {
                         console.log(resp.msg)
                     }

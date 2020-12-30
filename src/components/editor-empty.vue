@@ -19,6 +19,11 @@
 </template>
 <script>
   export default {
+    data(){
+      return{
+        token: this.db.get("USER").token
+      }
+    },
     props: {
       notes:{}
     },
@@ -33,7 +38,7 @@
             user_id:'zealon',
             type: type.key
         }
-        this.postRequest('/notes/create', dataForm).then(resp => {
+        this.postRequest('/notes/create', dataForm, {"JWTHeaderName":this.token}).then(resp => {
             if (resp && resp.code==200) {
               let timestamp=new Date().getTime();
               let url = '/home/notes-list/'+resp.data.categorySubId+'?level=2&type='+resp.data.type+'&timestamp='+timestamp;

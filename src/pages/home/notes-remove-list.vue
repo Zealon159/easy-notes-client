@@ -88,6 +88,7 @@
     export default {
         data() {
             return {
+                token: this.db.get("USER").token,
                 delBtn: false,
                 collapsed: false,
                 notesList:[],
@@ -119,13 +120,12 @@
                 let level = -1;
                 this.getRequest('/notes/list', 
                 {
-                    userId: "zealon",
                     star: star,
                     delete: del,
                     direction: 0,
                     level: level, 
                     categoryId: categoryId
-                }).then(resp => {
+                }, {"JWTHeaderName":this.token}).then(resp => {
                     if (resp.code == 200) {
                         if(resp.data.length > 0){
                             this.currentComponent = 'editor'
@@ -146,7 +146,7 @@
             },
             // 笔记信息
             loadNotesInfo(id){
-                this.getRequest('/notes/details', {id: id}).then(resp => {
+                this.getRequest('/notes/details', {id: id}, {"JWTHeaderName":this.token}).then(resp => {
                     if (resp.code == 200) {
                         this.notes = resp.data;
                     }
@@ -170,7 +170,7 @@
                     id: id,
                     delete: 0
                 }
-                postRequest('/notes/update', dataForm).then(resp => {
+                postRequest('/notes/update', dataForm, {"JWTHeaderName":this.token}).then(resp => {
                     if (resp && resp.code==200) {
                         this.removeNotes(id);
                         this.$message.success(resp.msg);
@@ -188,7 +188,7 @@
                     okType: 'danger',
                     cancelText: '算了',
                     onOk() {
-                        postRequest('/notes/delete', {id: id}).then(resp => {
+                        postRequest('/notes/delete', {id: id}, {"JWTHeaderName":this.token}).then(resp => {
                             if (resp && resp.code==200) {
                                 that.removeNotes(id);
                                 that.$message.success(resp.msg);
@@ -213,7 +213,7 @@
                     okType: 'danger',
                     cancelText: '算了',
                     onOk() {
-                        postRequest('/notes/delete-all', {userId: 'zealon'}).then(resp => {
+                        postRequest('/notes/delete-all', {}, {"JWTHeaderName":this.token}).then(resp => {
                             if (resp && resp.code==200) {
                                 that.notesList = [];
                                 that.notes = {};

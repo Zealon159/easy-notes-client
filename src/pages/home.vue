@@ -13,7 +13,7 @@
         <!-- 用户信息 -->
         <a-dropdown>
           <a class="ant-dropdown-link" @click="e => e.preventDefault()" 
-            style="margin-left:12px; color:ligthgreen"> Zealon <a-icon type="down" /> </a>
+            style="margin-left:12px; color:ligthgreen"> {{user.userName}} <a-icon type="down" /> </a>
           <template #overlay>
             <a-menu>
               <a-menu-item>
@@ -98,77 +98,78 @@
   </a-layout>
 </template>
 <script>
-export default {
-  data() {
-    return {
-      collapsed: false,
-      categorys:[],
-      selectedCategoryId:'',
-      level:1,
-      selectedCategoryParentId:''
-    };
-  },
-  created () {
-    this.loadCategory("")
-    this.gotoNotesList(-1,'0')
-  },
-  computed: {
-      title:function(){
-          if(!this.collapsed){
-              return 'Easy Notes';
-          }else{
-              return 'EN';
-          }
-      }
-  },
-  methods: {
-    loadCategory(parentId){
-      // 分类列表
-      this.getRequest('/category/list', 
-        {userId:"zealon",parentId:parentId}).then(resp => {
-          if (resp.code == 200) {
-            if(resp.data.length > 0){
-              for(let i=0;i<resp.data.length;i++){
-                this.categorys.push(resp.data[i])
+  export default {
+
+    
+    data() {
+      return {
+        user: this.db.get("USER"),
+        collapsed: false,
+        categorys:[],
+        selectedCategoryId:'',
+        level:1,
+        selectedCategoryParentId:''
+      };
+    },
+    created () {
+      this.loadCategory("")
+      this.gotoNotesList(-1,'0')
+    },
+    computed: {
+        title:function(){
+            if(!this.collapsed){
+                return 'Easy Notes';
+            }else{
+                return 'EN';
+            }
+        }
+    },
+    methods: {
+      loadCategory(){
+        // 分类列表
+        this.getRequest('/category/list', {}, {"JWTHeaderName":this.user.token}).then(resp => {
+            if (resp.code == 200) {
+              if(resp.data.length > 0){
+                for(let i=0;i<resp.data.length;i++){
+                  this.categorys.push(resp.data[i])
+                }
               }
             }
-          }
-      }) 
-    },
-    // 笔记列表
-    gotoNotesList(level, id, pid) {
-      this.selectedCategoryId = id;
-      this.level = level;
-      this.selectedCategoryParentId = pid;
-      let timestamp=new Date().getTime();
-      let url = '/home/notes-list/'+id+'?level='+level+'&timestamp='+timestamp;
-      this.$router.push(url);
-    },
-    // 创建笔记
-    createNotes(type){
-      if(this.selectedCategoryId == '') {
-        this.$message.info('请选择一个分类进行创建哦');
-        return;
-      }
+        }) 
+      },
+      // 笔记列表
+      gotoNotesList(level, id, pid) {
+        this.selectedCategoryId = id;
+        this.level = level;
+        this.selectedCategoryParentId = pid;
+        let timestamp=new Date().getTime();
+        let url = '/home/notes-list/'+id+'?level='+level+'&timestamp='+timestamp;
+        this.$router.push(url);
+      },
+      // 创建笔记
+      createNotes(type){
+        if(this.selectedCategoryId == '') {
+          this.$message.info('请选择一个分类进行创建哦');
+          return;
+        }
 
-      let dataForm = {
-          categorySubId: this.selectedCategoryId,
-          categoryId: this.selectedCategoryParentId,
-          title: '无标题',
-          content: '',
-          user_id:'zealon',
-          type: type
+        let dataForm = {
+            categorySubId: this.selectedCategoryId,
+            categoryId: this.selectedCategoryParentId,
+            title: '无标题',
+            content: '',
+            type: type
+        }
+        this.postRequest('/notes/create', dataForm, {"token":this.user.token}).then(resp => {
+            if (resp && resp.code==200) {
+              let timestamp=new Date().getTime();
+              let url = '/home/notes-list/'+this.selectedCategoryId+'?level='+this.level+'&type='+type+'&timestamp='+timestamp;
+              this.$router.push(url);
+            }
+        })
       }
-      this.postRequest('/notes/create', dataForm).then(resp => {
-          if (resp && resp.code==200) {
-            let timestamp=new Date().getTime();
-            let url = '/home/notes-list/'+this.selectedCategoryId+'?level='+this.level+'&type='+type+'&timestamp='+timestamp;
-            this.$router.push(url);
-          }
-      })
     }
-  }
-};
+  };
 </script>
 
 <style>

@@ -69,6 +69,7 @@
     export default {
         data() {
             return {
+                token: this.db.get("USER").token,
                 delBtn: false,
                 collapsed: false,
                 notesList:[],
@@ -138,13 +139,12 @@
                 let level = this.$route.query.level;
                 this.getRequest('/notes/list', 
                 {
-                    userId: "zealon",
                     star: star,
                     delete: del,
                     direction: 0,
                     level: level, 
                     categoryId: categoryId
-                }).then(resp => {
+                }, {"JWTHeaderName":this.token}).then(resp => {
                     if (resp.code == 200) {
                         if(resp.data.length > 0){
                             this.currentComponent = 'editor'
@@ -165,7 +165,7 @@
             },
             // 笔记信息
             loadNotesInfo(id){
-                this.getRequest('/notes/details', {id: id}).then(resp => {
+                this.getRequest('/notes/details', {id: id}, {"JWTHeaderName":this.token}).then(resp => {
                     if (resp.code == 200) {
                         this.notes = resp.data;
                     }
@@ -180,7 +180,7 @@
                 } else if (id == 2) {
                     this.category.name = "废纸篓";
                 } else {
-                    this.getRequest('/category/details', {id: id}).then(resp => {
+                    this.getRequest('/category/details', {id: id}, {"JWTHeaderName":this.token}).then(resp => {
                         if (resp.code == 200) {
                             this.category = resp.data;
                         }
@@ -218,7 +218,7 @@
                     id: id,
                     delete: 1
                 }
-                postRequest('/notes/update', dataForm).then(resp => {
+                postRequest('/notes/update', dataForm, {"JWTHeaderName":this.token}).then(resp => {
                     if (resp && resp.code==200) {
                         this.removeNotes(id)
                     }
