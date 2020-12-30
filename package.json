@@ -12,6 +12,7 @@
     "ant-design-vue": "^1.7.2",
     "axios": "^0.21.0",
     "core-js": "^3.6.5",
+    "mavon-editor": "^2.9.0",
     "vue": "^2.6.11",
     "vue-router": "^3.4.9",
     "wangeditor": "^4.6.0"

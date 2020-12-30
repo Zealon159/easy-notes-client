@@ -5,20 +5,15 @@ Vue.use(Router)
 
 // 页面组件
 const home = r => require.ensure([], () => r(require('@/pages/home')), 'home');
-const hello = r => require.ensure([], () => r(require('@/components/HelloWorld')), 'hello');
 const register = r => require.ensure([], () => r(require('@/pages/register')), 'register');
 const oauth2Register = r => require.ensure([], () => r(require('@/pages/oauth2-register')), 'oauth2Register');
 const oauth2Callback = r => require.ensure([], () => r(require('@/pages/oauth2-callback')), 'oauth2Callback');
 const login = r => require.ensure([], () => r(require('@/pages/login')), 'login');
 const notesList = r => require.ensure([], () => r(require('@/pages/home/notes-list')), 'notesList');
+const notesRemoveList = r => require.ensure([], () => r(require('@/pages/home/notes-remove-list')), 'notesRemoveList');
 
 // 路由配置
 const routes = [
-	{
-		path: '/hello',
-		name: 'HelloWorld',
-		component: hello
-	},
 	{
 		path: '/',
 		name: '主页',
@@ -28,6 +23,11 @@ const routes = [
 				path: '/home/notes-list/:id',
 				name: '笔记列表',
 				component: notesList
+			},
+			{
+				path: '/home/notes-remove-list',
+				name: '废纸篓列表',
+				component: notesRemoveList
 			}
 		]
 	},

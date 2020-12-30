@@ -1,5 +1,6 @@
 <template>
     <div class="home">
+        <!--工具栏-->
         <div class="toolbar">
             <a-row>
                 <a-col :span="16">
@@ -32,57 +33,46 @@
             <tags :notes="notes" ></tags>
         </div>
         <!--编辑器-->
-        <div id="myEditor" class="editor" ></div>
+        <mavon-editor v-model="notes.content" class="editor" :style="editorStyle"></mavon-editor>
     </div>
 </template>
 
 <script>
-    import wangEditor from 'wangeditor'
+    import Vue from 'vue'
     import tags from '@/components/tags'
+    import mavonEditor from 'mavon-editor'
+    import 'mavon-editor/dist/css/index.css'
+    Vue.use(mavonEditor)
     export default {
-        components: {
-            tags
-        },
         props: {
             notes: {}
         },
-        mounted() {
-            const editor = new wangEditor(`#myEditor`)
-            // 配置 onchange 回调函数，将数据同步到 vue 中
-            editor.config.onchange = (newHtml) => {
-                this.notes.content = newHtml
-            }
-            // 创建编辑器
-            let cHeight = window.outerHeight - (window.outerHeight - window.innerHeight) - 190;
-            editor.config.height = cHeight
-            editor.create()
-            this.editor = editor
-            this.editor.txt.html(this.notes.content)
-        },
-        watch: {
-            notes () {
-                // 初始化赋值
-                this.editor.txt.html(this.notes.content)
-            }
+        components: {
+            tags
         },
         computed: {
             // 收藏图标
-            starIconTheme:function(){
+            starIconTheme: function(){
                 if(this.notes.star == 1){
                     return 'filled';
                 }else{
                     return 'outlined';
                 }
+            },
+            editorStyle: function() {
+                // 计算body可用高度
+                let cHeight = window.outerHeight - (window.outerHeight - window.innerHeight) - 110;
+                let style = "margin-top:12px; height:" + cHeight + "px;";
+                return style
             }
         },
         methods: {
             // 更新笔记
             save(){
-                let txtContent = this.editor.txt.html()
                 let dataForm = {
                     id: this.notes.id,
                     title: this.notes.title,
-                    content: txtContent
+                    content: this.notes.content
                 }
                 this.postRequest('/notes/update', dataForm).then(resp => {
                     if (resp && resp.code==200) {
@@ -126,36 +116,22 @@
                     }
                 })
             }
-        },
-        beforeDestroy() {
-            // 调用销毁 API 对当前编辑器实例进行销毁
-            this.editor.destroy()
-            this.editor = null
         }
     }
 </script>
 
-<style lang="scss">
-  .home {
-    width: 100%;
-    margin: auto;
-    position: relative;
-    .btn {
-      position: absolute;
-      right: 0;
-      top: 0;
-      padding: 5px 10px;
-      cursor: pointer;
+<style>
+    .home {
+        width: 100%;
+        margin: auto;
+        position: relative;
     }
-  }
 
-  .toolbar {
-      height: 64px; line-height:64px;
-  }
+    .toolbar {
+        height: 64px; line-height:64px;
+    }
 
-  .editor {
-      z-index: 0; margin-top:12px
-  }
-
-  
+    .editor {
+        z-index: 0; 
+    }
 </style>
