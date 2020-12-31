@@ -1,11 +1,11 @@
 <template>
   <div class="login" >
-    <a-spin tip="请稍后..." size="large" :spinning="loading">
+    <a-spin tip="Loading..." size="large" :spinning="loading">
       <div style="height:120px"></div>
         <a-row type="flex">
           <a-col flex="auto"></a-col>
           <a-col flex="370px">
-            <a-card title="Easy Notes" 
+            <a-card title="简笔记" 
               hoverable
               :headStyle="{ fontSize: '22px' }" >
               <a-form
@@ -42,16 +42,16 @@
                   </a-button>
                   <div style="text-align:center; margin-top: 20px">
                     <a-space size="large">
-                      <a @click="register('github')">
+                      <a @click="oauth2Register('github')">
                         <a-icon type="github"  :style="{ color: 'grey', fontSize: '20px' }"/>
                       </a>
-                      <a @click="register('github')">
+                      <a @click="oauth2Register('qq')">
                         <a-icon type="qq"  :style="{  color: '#8bb4f9',fontSize: '20px' }"/>
                       </a>
-                      <a @click="register('github')">
+                      <a @click="oauth2Register('wechat')">
                         <a-icon type="wechat"  :style="{ color: 'green', fontSize: '20px' }"/>
                       </a>
-                      <a @click="register('weibo')">
+                      <a @click="oauth2Register('weibo')">
                         <a-icon type="weibo" :style="{ color: 'red', fontSize: '20px' }"/>
                       </a>
                     </a-space>
@@ -77,7 +77,6 @@
       };
     },
     beforeCreate() {
-        // https://github.com/login/oauth/authorize?client_id=d2456e0d3f62d5838fb2&redirect_uri=http://localhost:9000/login/oauth2/callback/github&login=notes-user&scope&state=ffuye934hjfdjif2dsd&allow_signup=true
       this.form = this.$form.createForm(this, { name: 'normal_login' });
     },
     methods: {
@@ -99,16 +98,14 @@
           }
         });
       },
-      register(client){
-          // 详情
-          if(client=="github"){
-              this.getRequest('/oauth2/authorization/github').then(resp => {
-                  console.log("resp:" + resp)
-                  if (resp.code == 200) {
-                      this.book = resp.data;
-                  }
-              })
-          }
+      // OAuth2注册
+      oauth2Register(client){
+        let url = "";
+        let timestamp = new Date().getTime();
+        if(client=="github"){
+          url = "https://github.com/login/oauth/authorize?client_id=d2456e0d3f62d5838fb2&redirect_uri=http://localhost:9000/login/oauth2/callback/github&login=notes-user&scope&state="+timestamp+"&allow_signup=true";
+        }
+        location.href = url;
       }
     },
   };

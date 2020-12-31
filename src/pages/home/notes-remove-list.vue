@@ -188,7 +188,7 @@
                     okType: 'danger',
                     cancelText: '算了',
                     onOk() {
-                        postRequest('/notes/delete', {id: id}, {"JWTHeaderName":this.token}).then(resp => {
+                        postRequest('/notes/delete', {id: id}, {"JWTHeaderName":that.token}).then(resp => {
                             if (resp && resp.code==200) {
                                 that.removeNotes(id);
                                 that.$message.success(resp.msg);
@@ -213,7 +213,7 @@
                     okType: 'danger',
                     cancelText: '算了',
                     onOk() {
-                        postRequest('/notes/delete-all', {}, {"JWTHeaderName":this.token}).then(resp => {
+                        postRequest('/notes/delete-all', {}, {"JWTHeaderName":that.token}).then(resp => {
                             if (resp && resp.code==200) {
                                 that.notesList = [];
                                 that.notes = {};

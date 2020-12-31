@@ -5,15 +5,16 @@
         {{title}}
       </div>
       <div class="user-info">
-        <a-avatar src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png" >
-          <template #icon>
-          </template>
-        </a-avatar>
+        <a-badge>
+          <a-icon v-if="user.clientName" slot="count" :type="user.clientName" />
+          <a-avatar :src="user.avatarUrl" style="backgroundColor:#b1c5a8;z-index:1" icon="user"
+           :alt="user.userName" shape="square" />
+        </a-badge>
 
         <!-- 用户信息 -->
         <a-dropdown>
           <a class="ant-dropdown-link" @click="e => e.preventDefault()" 
-            style="margin-left:12px; color:ligthgreen"> {{user.userName}} <a-icon type="down" /> </a>
+            style="margin-left:12px; color:#b1c5a8"> {{user.userName}} <a-icon type="down" /> </a>
           <template #overlay>
             <a-menu>
               <a-menu-item>
@@ -23,7 +24,7 @@
                 <a href="javascript:;">绑定管理</a>
               </a-menu-item>
               <a-menu-item>
-                <a href="javascript:;">退出系统</a>
+                <a @click="logout">退出系统</a>
               </a-menu-item>
             </a-menu>
           </template>
@@ -99,8 +100,6 @@
 </template>
 <script>
   export default {
-
-    
     data() {
       return {
         user: this.db.get("USER"),
@@ -118,9 +117,9 @@
     computed: {
         title:function(){
             if(!this.collapsed){
-                return 'Easy Notes';
+                return '简笔记';
             }else{
-                return 'EN';
+                return '简';
             }
         }
     },
@@ -160,13 +159,17 @@
             content: '',
             type: type
         }
-        this.postRequest('/notes/create', dataForm, {"token":this.user.token}).then(resp => {
+        this.postRequest('/notes/create', dataForm, {"JWTHeaderName":this.user.token}).then(resp => {
             if (resp && resp.code==200) {
               let timestamp=new Date().getTime();
               let url = '/home/notes-list/'+this.selectedCategoryId+'?level='+this.level+'&type='+type+'&timestamp='+timestamp;
               this.$router.push(url);
             }
         })
+      },
+      logout(){
+        this.db.remove("USER")
+        this.$router.push('/login');
       }
     }
   };

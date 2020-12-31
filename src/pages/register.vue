@@ -1,11 +1,11 @@
 <template>
     <div class="login" >
-      <a-spin tip="请稍后..." size="large" :spinning="loading">
+      <a-spin tip="Loading..." size="large" :spinning="loading">
       <div style="height:120px"></div>
         <a-row type="flex">
           <a-col flex="auto"></a-col>
           <a-col flex="370px">
-            <a-card title="Easy Notes" 
+            <a-card title="简笔记" 
               hoverable
               :headStyle="{ fontSize: '22px' }">
               <a-form :form="form" @submit="handleSubmit">
