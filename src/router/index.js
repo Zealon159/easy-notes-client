@@ -10,7 +10,7 @@ const oauth2Callback = r => require.ensure([], () => r(require('@/pages/oauth2-c
 const login = r => require.ensure([], () => r(require('@/pages/login')), 'login');
 const notesList = r => require.ensure([], () => r(require('@/pages/home/notes-list')), 'notesList');
 const notesRemoveList = r => require.ensure([], () => r(require('@/pages/home/notes-remove-list')), 'notesRemoveList');
-
+const categoryList = r => require.ensure([], () => r(require('@/pages/home/category-list')), 'categoryList');
 // 路由配置
 const routes = [
 	{
@@ -22,6 +22,11 @@ const routes = [
 				path: '/home/notes-list/:id',
 				name: '笔记列表',
 				component: notesList
+			},
+			{
+				path: '/home/category-list',
+				name: '分类列表',
+				component: categoryList
 			},
 			{
 				path: '/home/notes-remove-list',

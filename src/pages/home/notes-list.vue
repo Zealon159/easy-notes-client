@@ -3,7 +3,7 @@
         <a-layout-sider theme="light" width="245" :collapsed="collapsed" collapsedWidth="0">
             <!--分类信息-->
             <a-statistic 
-                :title="category.name" 
+                :title="category.title" 
                 :value="notesCount" 
                 style="margin:15px 0px 0px 15px" 
                 suffix="条笔记" />

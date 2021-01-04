@@ -1,13 +1,16 @@
 <template>
   <div class="login" >
     <a-spin tip="Loading..." size="large" :spinning="loading">
-      <div style="height:120px"></div>
+      <div style="height:100px"></div>
         <a-row type="flex">
           <a-col flex="auto"></a-col>
           <a-col flex="370px">
-            <a-card title="简笔记" 
+            <a-card 
               hoverable
               :headStyle="{ fontSize: '22px' }" >
+              <div style="text-align:center">
+                简笔记
+              </div>
               <a-form
                 :form="form"
                 class="login-form"
@@ -104,8 +107,10 @@
         let timestamp = new Date().getTime();
         if(client=="github"){
           url = "https://github.com/login/oauth/authorize?client_id=d2456e0d3f62d5838fb2&redirect_uri=http://localhost:9000/login/oauth2/callback/github&login=notes-user&scope&state="+timestamp+"&allow_signup=true";
+          location.href = url;
+        } else {
+          this.$message.info(client + '开发者应用审核中，后续实现该社交登录哦~');
         }
-        location.href = url;
       }
     },
   };
@@ -115,7 +120,12 @@
     width:100%;  
   }
 
+  .login-form {
+    margin-top: 35px
+  }
+
   .login-form-button {
     width: 100%;
+  
   }
 </style>

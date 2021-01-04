@@ -31,8 +31,7 @@
       // 创建笔记
       createNotes(type) {
         let dataForm = {
-            categorySubId: this.$route.params.id,
-            categoryId: '',
+            categoryId: this.$route.params.id,
             title: '无标题',
             content: '',
             user_id:'zealon',
@@ -41,7 +40,7 @@
         this.postRequest('/notes/create', dataForm, {"JWTHeaderName":this.token}).then(resp => {
             if (resp && resp.code==200) {
               let timestamp=new Date().getTime();
-              let url = '/home/notes-list/'+resp.data.categorySubId+'?level=2&type='+resp.data.type+'&timestamp='+timestamp;
+              let url = '/home/notes-list/'+resp.data.categoryId+'?level=2&type='+resp.data.type+'&timestamp='+timestamp;
               this.$router.push(url);
             }
         })

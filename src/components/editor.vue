@@ -83,6 +83,10 @@
         methods: {
             // 更新笔记
             save(){
+                if(!this.notes.title){
+                    this.$message.info('请输入个标题吧');
+                    return false;
+                }
                 let txtContent = this.editor.txt.html()
                 let dataForm = {
                     id: this.notes.id,
