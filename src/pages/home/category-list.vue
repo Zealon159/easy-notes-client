@@ -1,23 +1,32 @@
 <template>
     <a-layout-content style="margin: 16px">
-        <div style="padding:10px; 20px; 20px 20px; background-color:#FFFFFF">
-            <a-space>
-                <a-input v-model="category.title" style="width:200px" placeholder="输入分类名称" >
-                    <template #prefix>
-                        <a-icon type="info-circle" />
-                    </template>
-                </a-input>
-                <a-input v-model="category.sort" style="width:100px" placeholder="输入排序" >
-                    <template #prefix>
-                        <a-icon type="sort-ascending" />
-                    </template>
-                </a-input>
-                <a-button type="primary" @click="save">
-                    <a-icon type="save" />保存
-                </a-button>
-            </a-space>
-        </div>
-        <div style="padding:0px; 20px; 20px 20px; margin-top:12px; background-color:#FFFFFF">
+        <a-page-header
+            style=" background-color:#FFFFFF"
+            title="分类管理"
+            backIcon=''
+            sub-title="可以修改排序按顺序显示哦"
+            @back="() => null"
+        >
+            <div style="margin-top:10px">
+                <a-space>
+                    <a-input v-model="category.title" style="width:200px" placeholder="输入分类名称" >
+                        <template #prefix>
+                            <a-icon type="info-circle" />
+                        </template>
+                    </a-input>
+                    <a-input v-model="category.sort" style="width:100px" placeholder="输入排序" >
+                        <template #prefix>
+                            <a-icon type="sort-ascending" />
+                        </template>
+                    </a-input>
+                    <a-button type="primary" @click="save">
+                        <a-icon type="save" />保存
+                    </a-button>
+                </a-space>
+            </div>
+        </a-page-header>
+        
+        <div style="padding:20px; margin-top:16px; background-color:#FFFFFF">
             <a-list
                 class="demo-loadmore-list"
                 :loading="loading"

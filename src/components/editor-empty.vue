@@ -11,7 +11,8 @@
             Markdown 
           </a-menu-item>
         </a-menu>
-        <a-button style="margin-left: 8px" type="primary" > 创建笔记 
+        <a-button style="margin-left: 8px" type="primary" > 
+          创建笔记
           <a-icon type="plus" /> 
         </a-button>
       </a-dropdown>

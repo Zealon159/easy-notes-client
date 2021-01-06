@@ -9,7 +9,7 @@
               hoverable
               :headStyle="{ fontSize: '22px' }" >
               <div style="text-align:center">
-                简笔记
+                <h1>简笔记</h1>
               </div>
               <a-form
                 :form="form"

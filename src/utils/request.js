@@ -4,8 +4,8 @@ import db from '../utils/sessionStorage'
 import * as common from './common'
 
 axios.interceptors.response.use(success => {
-    if (success.status && success.status == 200 && success.data.status == 500) {
-        alert(success.data.msg);
+    if (success.status && success.data.code == 401) {
+        router.replace('/login');
         return;
     }
     return success.data;
@@ -21,7 +21,7 @@ axios.interceptors.response.use(success => {
             db.remove("LOGINFLAG")
             db.save("LOGINFLAG","1")
         }
-        router.replace('/');
+        router.replace('/login');
     } else if (error.response.status == 429) {
         alert('骚年，你的手速有点快哦！(￣.￣)...')
     } else {

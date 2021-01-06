@@ -12,9 +12,9 @@
             <!--笔记列表-->
             <div :style="notesListStyle">
                 <a-list size="small" >
-                    <a-list-item class="title" v-for="(item,index) in notesList" :index="index+''" :key="index">
+                    <a-list-item class="notes-item" v-for="(item,index) in notesList" :index="index+''" :key="index">
                         <div @mouseenter="onMouseoverEnvDelBtn($event)" @mouseleave="onMouseleaveEnvDelBtn($event)">
-                            <div style="width:200px; float:left; margin-left:10px">
+                            <div class="title">
                                 <a @click="loadNotesInfo(item.id)">
                                     <svg v-if="item.type=='markdown'"
                                         t="1609211872898" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2261" width="10" height="10"><path d="M896 0h128v1024h-128V304l-303.872 569.728L672 1024h-320l79.872-150.272L128 304V1024H0V0h128l384 722.816L896 0z" fill="#2F80ED" p-id="2262"></path></svg>
@@ -29,8 +29,13 @@
                                     </span>
                                     <a-icon v-if="item.star==1" type="heart" theme="twoTone" two-tone-color="#eb2f96" /> 
                                 </a>
+                                <div>
+                                    <span class="time">
+                                        {{common.formatTime(item.updateTime)}}
+                                    </span>
+                                </div>
                             </div>
-                            <div style="width:20px; float:left">
+                            <div class="btn">
                                 <a class="env-del-btn-span" @click="deleteNotes(item.id)">
                                     <a-icon type="delete" theme="filled" :style="{ color: 'red' }" />
                                 </a>
@@ -174,11 +179,11 @@
             // 分类信息
             loadCategoryInfo(id){
                 if (id == 0) {
-                    this.category.name = "近期笔记";
+                    this.category.title = "近期笔记";
                 } else if (id == 1) {
-                    this.category.name = "我的收藏";
+                    this.category.title = "我的收藏";
                 } else if (id == 2) {
-                    this.category.name = "废纸篓";
+                    this.category.title = "废纸篓";
                 } else {
                     this.getRequest('/category/details', {id: id}, {"JWTHeaderName":this.token}).then(resp => {
                         if (resp.code == 200) {
@@ -236,13 +241,25 @@
 </script>
 
 <style>
-    .title{
+    .notes-item {
         padding:0px;
         margin:0px
     }
 
-    .title a {
-        color:grey; font-size: 12px;
+    .notes-item .title {
+        width:200px; float:left; margin-left:10px
+    }
+
+    .notes-item .title a {
+        color:rgb(36, 43, 33); font-size: 13px;
+    }
+
+    .notes-item .title .time {
+        font-size:12px; color:rgb(161, 185, 206)
+    }
+
+    .notes-item .btn {
+        width:20px; float:left
     }
 
     .env-del-btn-span{ display: none;}

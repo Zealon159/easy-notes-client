@@ -19,7 +19,7 @@
                             <a-button @click="starNotes">
                                 <a-icon type="heart" :theme="starIconTheme" two-tone-color="#eb2f96" :style="{ fontSize: '16px', color: '#eb2f96' }" />
                             </a-button>
-                            <a-button>
+                            <a-button @click="showMoveTo">
                                 <a-icon type="interaction" :style="{ fontSize: '16px' }"/>
                             </a-button>
                         </a-button-group>
@@ -33,6 +33,30 @@
         </div>
         <!--编辑器-->
         <div id="myEditor" class="editor" ></div>
+        <!--移动至组件-->
+        <a-modal v-model="visible" title="移动至其它笔记本" @ok="handleOk" :zIndex=10017 ok-text="确认" cancel-text="算了">
+            <a-select
+                show-search
+                placeholder="选择一个笔记本哦"
+                option-filter-prop="children"
+                style="width: 245px;"
+                :filter-option="filterOption"
+                @change="handleChange"
+                :dropdownStyle="{ zIndex:10018 }"
+            >
+                <a-select-option v-for="(item,index) in categorys" :index="index+''" :key="index" :value="item.id">
+                    {{item.title}}
+                    <span v-if="item.id==notes.categoryId">
+                        (当前分类)
+                    </span>
+                </a-select-option>
+            </a-select>
+            <div style="margin-top:15px">
+                <a-alert v-if="alertVisible" :message="alertMessage"
+                    type="warning" closable :after-close="handleClose"
+                />
+            </div>
+        </a-modal>
     </div>
 </template>
 
@@ -43,6 +67,11 @@
         data(){
             return{
                 token: this.db.get("USER").token,
+                visible: false,
+                alertVisible: false,
+                alertMessage:'骚年，当前笔记已在此笔记本下了哦!',
+                categorys: [],
+                selectedCategoryId:''
             }
         },
         components: {
@@ -63,6 +92,8 @@
             editor.create()
             this.editor = editor
             this.editor.txt.html(this.notes.content)
+
+            this.loadCategorys();
         },
         watch: {
             notes () {
@@ -81,6 +112,20 @@
             }
         },
         methods: {
+            // 分类列表
+            loadCategorys() {
+                this.categorys = [];
+                this.getRequest('/category/list', {}, {"JWTHeaderName":this.token}).then(resp => {
+                    if (resp.code == 200) {
+                        if(resp.data.length > 0){
+                            for(let i=0;i<resp.data.length;i++){
+                                this.categorys.push(resp.data[i])
+                            }
+                        }
+                    }
+                    this.loading = false;
+                }) 
+            },
             // 更新笔记
             save(){
                 if(!this.notes.title){
@@ -134,6 +179,50 @@
                         this.$message.success(resp.msg);
                     }
                 })
+            },
+            // 显示移动至
+            showMoveTo(){
+                this.visible = true;
+            },
+            filterOption(input, option) {
+                return (
+                    option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                );
+            },
+            handleChange(value) {
+                this.selectedCategoryId = value;
+                if(value==this.notes.categoryId){
+                    this.alertVisible = true;
+                }else{
+                    this.alertVisible = false;
+                }
+            },
+            handleOk(){
+                if(!this.selectedCategoryId){
+                    this.alertVisible = true;
+                    this.alertMessage = '骚年，还没有选择笔记本哦!'
+                    return false;
+                }
+                if(this.selectedCategoryId==this.notes.categoryId){
+                    this.alertVisible = true;
+                    this.alertMessage = '骚年，当前笔记已在此笔记本下了哦!'
+                    return false;
+                }
+                let id = this.notes.id;
+                let dataForm = {
+                    id: id,
+                    categoryId: this.selectedCategoryId
+                }
+                this.postRequest('/notes/update', dataForm, {"JWTHeaderName":this.token}).then(resp => {
+                    if (resp && resp.code==200) {
+                        this.$emit('removeNotes', id);
+                        this.visible = false;
+                        this.$message.success(resp.msg);
+                    }
+                })
+            },
+            handleClose() {
+               this.alertVisible = false;
             }
         },
         beforeDestroy() {
