@@ -173,6 +173,7 @@
             },
             // 显示移动至
             showMoveTo(){
+                this.alertVisible = false;
                 this.visible = true;
             },
             filterOption(input, option) {

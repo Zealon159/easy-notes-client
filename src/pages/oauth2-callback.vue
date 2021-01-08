@@ -53,6 +53,7 @@
 export default {
   data() {
     return {
+      user: this.db.get("USER"),
       loading: true,
       username: '',
       password: '',
@@ -70,33 +71,60 @@ export default {
     init() {
       let that = this;
       let clientId = this.$route.params.clientId;
-      this.getRequest('/oauth2/authorized/callback/' + clientId, 
+      let url = '/oauth2/authorized/callback/' + clientId
+      let values = 
       {
         code: this.$route.query.code,
         state: this.$route.query.state
-      }).then(resp => {
+      }
+      let token = ''
+      if(this.user!=null){
+        token=this.user.token
+      }
+      this.getRequest(url, values, {"JWTHeaderName":token}).then(resp => {
         if (resp.code == 200) {
-          that.initUserName = resp.data.initUserName 
-          that.username = resp.data.initUserId
-          that.initAvatarUrl = resp.data.initAvatarUrl
-          // 已注册，存储token 跳转主页
-          if(resp.data.registered == true){
-            that.db.save("USER", resp.data);
-            that.$router.push("/");
-          } else {
-            that.loading = false;
-            // OAuth2 name被其它人使用，需要创建新账户
-            if(resp.data.otherAccountRegistered == true){
-              
-              that.$warning({
-                title: '报告主人',
-                content: '不知道是哪个愣头青把您的'+clientId+'账户<'+resp.data.initUserId + ' >给使用了，那我们使用别的名字吧 ε=(´ο｀*)))',
-              });
-            } 
-            // 提示用户是否使用 OAuth2 name 注册账户
-            else {
-              that.registerWithClient(resp.data)
+          // OAuth2注册
+          if(resp.data.type==1){
+            that.initUserName = resp.data.initUserName 
+            that.username = resp.data.initUserId
+            that.initAvatarUrl = resp.data.initAvatarUrl
+            // 已注册，存储token 跳转主页
+            if(resp.data.registered == true){
+              that.db.save("USER", resp.data);
+              that.$router.push("/");
+            } else {
+              that.loading = false;
+              // OAuth2 name被其它人使用，需要创建新账户
+              if(resp.data.otherAccountRegistered == true){
+                
+                that.$warning({
+                  title: '报告主人',
+                  content: '不知道是哪个愣头青把您的'+clientId+'账户<'+resp.data.initUserId + ' >给使用了，那我们使用别的名字吧 ε=(´ο｀*)))',
+                });
+              } 
+              // 提示用户是否使用 OAuth2 name 注册账户
+              else {
+                that.registerWithClient(resp.data)
+              }
             }
+          } 
+          // OAuth2绑定
+          else {
+            if(resp.data.otherAccountBind == true){
+              that.$router.push("/");
+              that.$message.warn("该社交账户已被其它账户绑定了，您可以退出登录直接使用该社交账户登录哦");
+            } else {
+              that.$router.push("/");
+              that.$message.success("绑定成功，以后可以使用该社交账户登录啦");
+            }
+          }
+        } else {
+          if(token!=''){
+            that.$router.push("/");
+            that.$message.error("操作失败了，请重试哦");
+          }else{
+            that.$router.push("/login");
+            that.$message.error("操作失败了，请重试哦");
           }
         }
       })

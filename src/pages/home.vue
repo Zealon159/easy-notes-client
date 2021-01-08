@@ -12,23 +12,22 @@
         </a-badge>
 
         <!-- 用户信息 -->
-        <a-dropdown>
-          <a class="ant-dropdown-link" @click="e => e.preventDefault()" 
-            style="margin-left:12px; color:#b1c5a8"> {{user.userName}} <a-icon type="down" /> </a>
-          <template #overlay>
-            <a-menu>
-              <a-menu-item>
-                <a href="javascript:;">修改密码</a>
-              </a-menu-item>
-              <a-menu-item>
-                <a href="javascript:;">绑定管理</a>
-              </a-menu-item>
-              <a-menu-item>
-                <a @click="logout">退出系统</a>
-              </a-menu-item>
-            </a-menu>
-          </template>
-        </a-dropdown>
+        <span :class="userTextClass">
+          <a-dropdown >
+            <a class="ant-dropdown-link" @click="e => e.preventDefault()" 
+              style="margin-left:12px; color:#b1c5a8"> {{user.userName}} <a-icon type="down" /> </a>
+            <template #overlay>
+              <a-menu>
+                <a-menu-item>
+                  <a @click="$router.push('/home/my');">我的账户</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <a @click="logout">退出系统</a>
+                </a-menu-item>
+              </a-menu>
+            </template>
+          </a-dropdown>
+        </span>
       </div>
       <a-menu 
         theme="dark" 
@@ -90,7 +89,7 @@
         </a-menu-item>
         <a-menu-item key="1006" @click="$router.push('/home/category-list');">
           <a-icon type="history" />
-          <span>分类管理</span>
+          <span>笔记本管理</span>
         </a-menu-item>
       </a-menu>
     </a-layout-sider>
@@ -117,13 +116,20 @@
       this.gotoNotesList(-1,'0')
     },
     computed: {
-        title:function(){
-            if(!this.collapsed){
-                return '简笔记';
-            }else{
-                return '简';
-            }
+      title:function(){
+        if(!this.collapsed){
+          return '简笔记';
+        }else{
+          return '简';
         }
+      },
+      userTextClass:function(){
+        if(!this.collapsed){
+          return 'user-text';
+        }else{
+          return 'user-text-hide';
+        }
+      }
     },
     methods: {
       loadCategory(){
@@ -187,5 +193,13 @@
   .user-info {
     margin: 32px 0px 18px 16px; 
     color:rgb(183, 197, 214);
+  }
+
+  .user-text{
+    display:inline
+  }
+
+  .user-text-hide{
+    display:none
   }
 </style>

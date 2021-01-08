@@ -5,6 +5,7 @@ Vue.use(Router)
 
 // 页面组件
 const home = r => require.ensure([], () => r(require('@/pages/home')), 'home');
+const my = r => require.ensure([], () => r(require('@/pages/home/my')), 'my');
 const register = r => require.ensure([], () => r(require('@/pages/register')), 'register');
 const oauth2Callback = r => require.ensure([], () => r(require('@/pages/oauth2-callback')), 'oauth2Callback');
 const login = r => require.ensure([], () => r(require('@/pages/login')), 'login');
@@ -19,6 +20,10 @@ const routes = [
 		component: home,
 		children:[
 			{
+				path: '/home/my',
+				name: '我的账户',
+				component: my
+			},{
 				path: '/home/notes-list/:id',
 				name: '笔记列表',
 				component: notesList
