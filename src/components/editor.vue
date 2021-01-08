@@ -17,7 +17,7 @@
                                 <a-icon type="delete" :style="{ fontSize: '16px',color:'red' }"/>
                             </a-button>
                             <a-button @click="starNotes">
-                                <a-icon type="heart" :theme="starIconTheme" two-tone-color="#eb2f96" :style="{ fontSize: '16px', color: '#eb2f96' }" />
+                                <my-icon :type="starIconType" style="font-size:16px"></my-icon>
                             </a-button>
                             <a-button @click="showMoveTo">
                                 <a-icon type="interaction" :style="{ fontSize: '16px' }"/>
@@ -103,11 +103,11 @@
         },
         computed: {
             // 收藏图标
-            starIconTheme:function(){
+            starIconType: function(){
                 if(this.notes.star == 1){
-                    return 'filled';
+                    return 'icon-xinxingtianchong';
                 }else{
-                    return 'outlined';
+                    return 'icon-xinaixin';
                 }
             }
         },

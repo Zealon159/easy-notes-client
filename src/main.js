@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Antd from 'ant-design-vue';
+import { Icon } from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
 
 import App from './App.vue'
@@ -23,8 +24,14 @@ Vue.prototype.deleteRequest = deleteRequest;
 Vue.prototype.getRequest = getRequest;
 
 Vue.config.productionTip = false;
-
 Vue.use(Antd);
+
+// 图标库
+import iconFront from './assets/iconfonts/iconfont.js'
+const myIcon = Icon.createFromIconfontCN({
+  scriptUrl: iconFront
+})
+Vue.component('my-icon', myIcon)
 
 new Vue({
   router,

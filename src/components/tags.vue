@@ -22,7 +22,7 @@
             @keyup.enter="handleInputConfirm"
         />
         <a-tag v-else style="background: #fff; borderStyle: dashed;" @click="showInput">
-            <a-icon type="tag" /> +标签
+            <my-icon type="icon-biaoqian"/> +标签
         </a-tag>
     </div>
 </template>

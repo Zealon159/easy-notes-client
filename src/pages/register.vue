@@ -1,14 +1,26 @@
 <template>
     <div class="login" >
       <a-spin tip="Loading..." size="large" :spinning="loading">
-      <div style="height:120px"></div>
+        <div style="height:120px">
+          <a-row>
+            <a-col>
+              <a-col :span="1"></a-col>
+              <a-col :span="7" ><my-icon type="icon-ningmeng" class="my-icon" style=" font-size:108px"/></a-col>
+              <a-col :span="13"></a-col>
+              <a-col :span="3"><my-icon type="icon-mianbao1" class="my-icon" style="margin-top:10px; font-size:108px"/></a-col>
+            </a-col>
+          </a-row>
+        </div>
         <a-row type="flex">
           <a-col flex="auto"></a-col>
           <a-col flex="370px">
-            <a-card title="简笔记" 
-              hoverable
+            <a-card hoverable
               :headStyle="{ fontSize: '22px' }">
-              <a-form :form="form" @submit="handleSubmit">
+              <div class="logo">
+                <my-icon type="icon-GULULU-suanningmeng" />
+                简笔记
+              </div>
+              <a-form :form="form" @submit="handleSubmit" class="login-form">
                 <a-form-item>
                   <a-input
                       v-decorator="[
@@ -99,6 +111,15 @@
             </a-card>
           </a-col>
           <a-col flex="auto"></a-col>
+        </a-row>
+        <a-row>
+          <a-col>
+            <a-col :span="4"><my-icon type="icon-dangao" class="my-icon" style="margin:0px 50px 0px 0px; font-size:64px"/></a-col>
+            <a-col :span="18" style="text-align:center">
+              <my-icon type="icon-wing" class="my-icon" style="font-size:64px"/>
+            </a-col>
+            <a-col :span="2" style="text-align:right"><my-icon type="icon-zhuangshi2" class="my-icon" style=" font-size:64px"/></a-col>
+          </a-col>
         </a-row>
       </a-spin>
   </div>
