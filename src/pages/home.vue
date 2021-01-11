@@ -79,7 +79,7 @@
           <span>我的收藏</span>
         </a-menu-item>
         <a-menu-item key="1004" @click="$message.info('功能开发中ヾ(◍°∇°◍)ﾉﾞ');">
-          <a-icon type="tags" />
+           <a-icon type="tags" />
           <span>我的标签</span>
         </a-menu-item>
         <a-menu-item key="1005" @click="$router.push('/home/notes-remove-list');">

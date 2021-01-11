@@ -1,5 +1,5 @@
 <template>
-  <div class="login" >
+  <div class="login" :style="backgourndStyle" >
     <a-spin tip="Loading..." size="large" :spinning="loading">
       <div style="height:120px">
         <a-row>
@@ -15,8 +15,7 @@
           <a-col flex="auto"></a-col>
           <a-col flex="370px">
             <a-card 
-              hoverable
-              :headStyle="{ fontSize: '22px' }" >
+              hoverable>
               <div class="logo">
                 <my-icon type="icon-GULULU-suanningmeng" />
                 简笔记
@@ -80,11 +79,11 @@
         </a-row>
         <a-row>
           <a-col>
-            <a-col :span="4"><my-icon type="icon-dangao" class="my-icon" style="margin:0px 50px 0px 0px; font-size:96px"/></a-col>
+            <a-col :span="4"><my-icon type="icon-mianbao" class="my-icon" style="margin:0px 50px 0px 0px; font-size:96px"/></a-col>
             <a-col :span="18" style="text-align:center">
               <my-icon type="icon-wing" class="my-icon" style="margin:30px 50px 0px 0px; font-size:128px"/>
             </a-col>
-            <a-col :span="2" style="text-align:right"><my-icon type="icon-zhuangshi2" class="my-icon" style=" font-size:64px"/></a-col>
+            <a-col :span="2" style="text-align:right"><my-icon type="icon-yu" class="my-icon" style=" font-size:64px"/></a-col>
           </a-col>
         </a-row>
     </a-spin>
@@ -97,6 +96,17 @@
       return {
         loading: false
       };
+    },
+    computed:{
+        backgourndStyle: function() {
+            // 计算body可用高度
+            let cHeight = window.outerHeight - (window.outerHeight - window.innerHeight)
+            // 计算背景图
+            let imgs = ["http://resource.zealon.cn/01.jpg","http://resource.zealon.cn/02.jpg","http://resource.zealon.cn/03.jpg"]
+            let imgName = imgs[Math.floor(Math.random() * 3)]
+            let style = "background-image:url('" + imgName + "'); background-repeat: round; height:" + cHeight + "px;";
+            return style
+        }
     },
     beforeCreate() {
       this.form = this.$form.createForm(this, { name: 'normal_login' });
@@ -139,7 +149,7 @@
     height: 32px;
     color: #82c090;
     font: 300;
-    font-size: 32px;
+    font-size: 36px;
     text-align: center;
   }
 

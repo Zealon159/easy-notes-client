@@ -1,5 +1,5 @@
 <template>
-    <div class="login" >
+    <div class="login" :style="backgourndStyle" >
       <a-spin tip="Loading..." size="large" :spinning="loading">
         <div style="height:120px">
           <a-row>
@@ -132,6 +132,17 @@
         confirmDirty: false,
         loading: false
       };
+    },
+    computed:{
+        backgourndStyle: function() {
+            // 计算body可用高度
+            let cHeight = window.outerHeight - (window.outerHeight - window.innerHeight)
+            // 计算背景图
+            let imgs = ["http://resource.zealon.cn/01.jpg","http://resource.zealon.cn/02.jpg","http://resource.zealon.cn/03.jpg"]
+            let imgName = imgs[Math.floor(Math.random() * 3)]
+            let style = "background-image:url('" + imgName + "'); background-repeat: round; height:" + cHeight + "px;";
+            return style
+        }
     },
     beforeCreate() {
       this.form = this.$form.createForm(this, { name: 'register' });

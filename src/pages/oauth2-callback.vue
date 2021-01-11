@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="login" :style="backgourndStyle" >
     <a-spin size="large" tip="Loading..." :spinning="loading">
       <div style="height:120px">
         <a-row>
@@ -85,6 +85,17 @@ export default {
   },
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: 'normal_login' });
+  },
+  computed:{
+      backgourndStyle: function() {
+          // 计算body可用高度
+          let cHeight = window.outerHeight - (window.outerHeight - window.innerHeight)
+          // 计算背景图
+          let imgs = ["http://resource.zealon.cn/01.jpg","http://resource.zealon.cn/02.jpg","http://resource.zealon.cn/03.jpg"]
+          let imgName = imgs[Math.floor(Math.random() * 3)]
+          let style = "background-image:url('" + imgName + "'); background-repeat: round; height:" + cHeight + "px;";
+          return style
+      }
   },
   created(){
     this.init();
