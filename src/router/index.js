@@ -1,17 +1,17 @@
 import Vue from 'vue'
-import Router from 'vue-router'
+import VueRouter from 'vue-router'
 
-Vue.use(Router)
+Vue.use(VueRouter)
 
 // 页面组件
-const home = r => require.ensure([], () => r(require('@/pages/home')), 'home');
-const my = r => require.ensure([], () => r(require('@/pages/home/my')), 'my');
-const register = r => require.ensure([], () => r(require('@/pages/register')), 'register');
-const oauth2Callback = r => require.ensure([], () => r(require('@/pages/oauth2-callback')), 'oauth2Callback');
-const login = r => require.ensure([], () => r(require('@/pages/login')), 'login');
-const notesList = r => require.ensure([], () => r(require('@/pages/home/notes-list')), 'notesList');
-const notesRemoveList = r => require.ensure([], () => r(require('@/pages/home/notes-remove-list')), 'notesRemoveList');
-const categoryList = r => require.ensure([], () => r(require('@/pages/home/category-list')), 'categoryList');
+const home = (resolve) => require(['@/pages/home.vue'], resolve)
+const my = (resolve) => require(['@/pages/home/my.vue'], resolve)
+const register = (resolve) => require(['@/pages/register.vue'], resolve)
+const oauth2Callback = (resolve) => require(['@/pages/oauth2-callback.vue'], resolve)
+const login = (resolve) => require(['@/pages/login.vue'], resolve)
+const notesList = (resolve) => require(['@/pages/home/notes-list.vue'], resolve) 
+const notesRemoveList = (resolve) => require(['@/pages/home/notes-remove-list.vue'], resolve) 
+const categoryList = (resolve) => require(['@/pages/home/category-list.vue'], resolve)
 // 路由配置
 const routes = [
 	{
@@ -57,7 +57,7 @@ const routes = [
 	}
 ]
 
-const router = new Router({
+const router = new VueRouter({
 	mode: 'history',
     routes 
 })

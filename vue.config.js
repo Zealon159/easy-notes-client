@@ -1,3 +1,7 @@
+const CompressionWebpackPlugin = require('compression-webpack-plugin');
+const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
+const productionGzipExtensions = ['js', 'css'];
+
 module.exports = {
   publicPath: '/',
   devServer: {
@@ -14,5 +18,22 @@ module.exports = {
               }
           }
       }
-  }
+  },
+  configureWebpack : {
+    plugins: [
+      new CompressionWebpackPlugin({
+        algorithm: 'gzip',
+        test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
+        threshold: 10240,
+        minRatio: 0.8
+      })
+    ],
+    externals : {
+      vue: 'Vue',
+      'vue-router': 'VueRouter',
+      axios: 'axios',
+      'antd': 'antd'
+    }
+  },
+  
 }

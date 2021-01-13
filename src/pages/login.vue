@@ -135,7 +135,7 @@
         let url = "";
         let timestamp = new Date().getTime();
         if(client=="github"){
-          url = "https://github.com/login/oauth/authorize?client_id=d2456e0d3f62d5838fb2&redirect_uri=http://localhost:9000/login/oauth2/callback/github&login=notes-user&scope&state="+timestamp+"&allow_signup=true";
+          url = "https://github.com/login/oauth/authorize?client_id=d2456e0d3f62d5838fb2&redirect_uri=http://notes.zealon.cn/login/oauth2/callback/github&login=notes-user&scope&state="+timestamp+"&allow_signup=true";
           location.href = url;
         } else {
           this.$message.info(client + '开发者应用审核中，后续实现该社交登录哦~');

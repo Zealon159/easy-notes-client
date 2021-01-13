@@ -11,6 +11,7 @@
     "@ant-design/icons": "^4.3.0",
     "ant-design-vue": "^1.7.2",
     "axios": "^0.21.0",
+    "compression-webpack-plugin": "^5.0.1",
     "core-js": "^3.6.5",
     "mavon-editor": "^2.9.0",
     "vue": "^2.6.11",
@@ -25,6 +26,7 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
+    "html-webpack-externals-plugin": "^3.8.0",
     "node-sass": "^5.0.0",
     "sass-loader": "^10.1.0",
     "vue-template-compiler": "^2.6.11"
