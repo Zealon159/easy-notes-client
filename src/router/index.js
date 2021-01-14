@@ -15,7 +15,12 @@ const categoryList = (resolve) => require(['@/pages/home/category-list.vue'], re
 // 路由配置
 const routes = [
 	{
-		path: '/',
+		path: '',
+		name: '登录',
+		component: login
+	},
+	{
+		path: '/home',
 		name: '主页',
 		component: home,
 		children:[
@@ -49,11 +54,6 @@ const routes = [
 		path: '/login/oauth2/callback/:clientId',
 		name: 'Oauth2回调注册',
 		component: oauth2Callback
-	},
-	{
-		path: '/login',
-		name: '登录',
-		component: login
 	}
 ]
 

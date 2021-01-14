@@ -104,7 +104,7 @@
                 </a-form-item>
                 <a-form-item>
                   <div>
-                    已有账户？<a @click="$router.push('/login')"> 去登录  </a>
+                    已有账户？<a @click="$router.push('/')"> 去登录  </a>
                   </div>
                 </a-form-item>
               </a-form>

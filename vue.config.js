@@ -32,7 +32,10 @@ module.exports = {
       vue: 'Vue',
       'vue-router': 'VueRouter',
       axios: 'axios',
-      'antd': 'antd'
+      'antd': 'antd',
+      'moment': 'moment',
+      //'highlight.js': 'hljs',
+      "mavon-editor": "MavonEditor"
     }
   },
   

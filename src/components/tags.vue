@@ -18,7 +18,7 @@
             :style="{ width: '78px' }"
             :value="inputValue"
             @change="handleInputChange"
-            @blur="handleInputConfirm"
+            @blur="handleInputChannel"
             @keyup.enter="handleInputConfirm"
         />
         <a-tag v-else style="background: #fff; borderStyle: dashed;" @click="showInput">
@@ -40,9 +40,11 @@
         },
         methods: {
             // 更新标签
-            save(){
+            save(type, tagName){
                 let dataForm = {
-                    id: this.notes.id,
+                    notesId: this.notes.id,
+                    type: type,
+                    tagName: tagName,
                     tags: this.notes.tags
                 }
                 this.postRequest('/notes/update-tags', dataForm, {"JWTHeaderName":this.token}).then(resp => {
@@ -51,10 +53,11 @@
                     }
                 })
             },
+            // 删除标签
             handleClose(removedTag) {
                 let tags = this.notes.tags.filter(tag => tag !== removedTag);
                 this.notes.tags = tags;
-                this.save();
+                this.save(-1, removedTag);
             },
             showInput() {
                 this.inputVisible = true;
@@ -66,8 +69,31 @@
             handleInputChange(e) {
                 this.inputValue = e.target.value;
             },
-
+            // 提交标签
             handleInputConfirm() {
+                let inputValue = this.inputValue;
+                if(inputValue==''){
+                    this.$message.info('请输入标签名哦');
+                    return;
+                }
+                let tags = this.notes.tags;
+                if(tags == null){
+                    tags = [];
+                }
+                if (inputValue && tags.indexOf(inputValue) === -1) {
+                    tags = [...tags, inputValue];
+                }
+                
+                this.notes.tags = tags;
+                Object.assign(this, {
+                    tags,
+                    inputVisible: false,
+                    inputValue: '',
+                });
+                this.save(1, inputValue);
+            },
+            // 取消操作
+            handleInputChannel(){
                 let inputValue = this.inputValue;
                 let tags = this.notes.tags;
                 if(tags == null){
@@ -83,8 +109,9 @@
                     inputVisible: false,
                     inputValue: '',
                 });
-
-                this.save();
+                if(inputValue!=''){
+                    this.save(1, inputValue);
+                }
             },
             tagColor:function(index){
                 let color = 'green';

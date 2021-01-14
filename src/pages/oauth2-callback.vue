@@ -124,7 +124,7 @@ export default {
             // 已注册，存储token 跳转主页
             if(resp.data.registered == true){
               that.db.save("USER", resp.data);
-              that.$router.push("/");
+              that.$router.push("/home");
             } else {
               that.loading = false;
               // OAuth2 name被其它人使用，需要创建新账户
@@ -144,10 +144,10 @@ export default {
           // OAuth2绑定
           else {
             if(resp.data.otherAccountBind == true){
-              that.$router.push("/");
+              that.$router.push("/home");
               that.$message.warn("该社交账户已被其它账户绑定了，您可以退出登录直接使用该社交账户登录哦");
             } else {
-              that.$router.push("/");
+              that.$router.push("/home");
               that.$message.success("绑定成功，以后可以使用该社交账户登录啦");
             }
           }
@@ -156,7 +156,7 @@ export default {
             that.$router.push("/");
             that.$message.error("操作失败了，请重试哦");
           }else{
-            that.$router.push("/login");
+            that.$router.push("/");
             that.$message.error("操作失败了，请重试哦");
           }
         }

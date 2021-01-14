@@ -12,7 +12,7 @@
             <!--笔记列表-->
             <div :style="notesListStyle">
                 <a-list size="small" >
-                    <a-list-item class="notes-item" v-for="(item,index) in notesList" :index="index+''" :key="index">
+                    <a-list-item class="notes-item" v-for="(item,index) in notesList" :index="index+''" :key="index" :style="itemStyle(item.id)">
                         <div @mouseenter="onMouseoverEnvDelBtn($event)" @mouseleave="onMouseleaveEnvDelBtn($event)">
                             <div class="title">
                                 <a @click="loadNotesInfo(item.id)" >
@@ -78,7 +78,8 @@
                 notes:{},
                 notesCount:0,
                 category:{},
-                type:''
+                type:'',
+                selectedId:''
             };
         },
         components: {
@@ -102,6 +103,7 @@
                     return componentName;
                 },
                 set: function () {
+                    
                 }
             },
             notesListStyle: function() {
@@ -172,6 +174,7 @@
                         this.notes = resp.data;
                     }
                 })
+                this.selectedId = id;
             },
             // 分类信息
             loadCategoryInfo(id){
@@ -232,6 +235,13 @@
             },
             onMouseleaveEnvDelBtn(event) {
                 event.target.parentElement.querySelector(".env-del-btn-span").style.cssText += "display:none"
+            },
+            itemStyle (id){
+                if(this.selectedId==id){
+                    return 'background:#eff5fa';
+                }else{
+                    return '';
+                }
             }
         }
     };

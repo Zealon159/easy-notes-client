@@ -178,7 +178,7 @@
       },
       logout(){
         this.db.remove("USER")
-        this.$router.push('/login');
+        this.$router.push('/');
       }
     }
   };

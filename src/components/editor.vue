@@ -61,7 +61,6 @@
 </template>
 
 <script>
-    import wangEditor from 'wangeditor'
     import tags from '@/components/tags'
     export default {
         data(){
@@ -81,7 +80,8 @@
             notes: {}
         },
         mounted() {
-            const editor = new wangEditor(`#myEditor`)
+            const E = window.wangEditor
+            const editor = new E(document.getElementById('myEditor'))
             // 配置 onchange 回调函数，将数据同步到 vue 中
             editor.config.onchange = (newHtml) => {
                 this.notes.content = newHtml
@@ -89,6 +89,7 @@
             // 创建编辑器
             let cHeight = window.outerHeight - (window.outerHeight - window.innerHeight) - 190;
             editor.config.height = cHeight
+
             editor.create()
             this.editor = editor
             this.editor.txt.html(this.notes.content)
