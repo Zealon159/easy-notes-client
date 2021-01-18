@@ -34,7 +34,6 @@ module.exports = {
       axios: 'axios',
       'antd': 'antd',
       'moment': 'moment',
-      //'highlight.js': 'hljs',
       "mavon-editor": "MavonEditor"
     }
   },

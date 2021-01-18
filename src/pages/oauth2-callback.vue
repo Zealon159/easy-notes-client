@@ -1,6 +1,6 @@
 <template>
   <div class="login" :style="backgourndStyle" >
-    <a-spin size="large" tip="Loading..." :spinning="loading">
+    <a-spin size="large" tip="社交登录处理中，请稍后..." :spinning="loading">
       <div style="height:120px">
         <a-row>
           <a-col>

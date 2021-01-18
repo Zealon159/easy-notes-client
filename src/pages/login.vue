@@ -111,6 +111,13 @@
     beforeCreate() {
       this.form = this.$form.createForm(this, { name: 'normal_login' });
     },
+    mounted () {
+      let user = this.db.get("USER")
+      console.log(user)
+      if(user!=null && user.token!=null){
+        this.$router.replace('/home');
+      }
+    },
     methods: {
       handleSubmit(e) {
         let that = this;

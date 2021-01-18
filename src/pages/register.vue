@@ -159,7 +159,7 @@
               that.loading = false
               if (resp && resp.code==200) {
                 that.db.save("USER", resp.data);
-                that.$router.replace('/');
+                that.$router.replace('/home');
               }else{
                 that.$message.info(resp.msg);
               }
