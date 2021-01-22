@@ -57,14 +57,14 @@
                       <a @click="oauth2Register('github')">
                         <a-icon type="github"  :style="{ color: 'grey', fontSize: '20px' }"/>
                       </a>
+                      <a @click="oauth2Register('weibo')">
+                        <a-icon type="weibo" :style="{ color: 'red', fontSize: '20px' }"/>
+                      </a>
                       <a @click="oauth2Register('qq')">
                         <a-icon type="qq"  :style="{  color: '#8bb4f9',fontSize: '20px' }"/>
                       </a>
                       <a @click="oauth2Register('wechat')">
                         <a-icon type="wechat"  :style="{ color: 'green', fontSize: '20px' }"/>
-                      </a>
-                      <a @click="oauth2Register('weibo')">
-                        <a-icon type="weibo" :style="{ color: 'red', fontSize: '20px' }"/>
                       </a>
                     </a-space>
                   </div>
@@ -143,6 +143,9 @@
         let timestamp = new Date().getTime();
         if(client=="github"){
           url = "https://github.com/login/oauth/authorize?client_id=d2456e0d3f62d5838fb2&redirect_uri=http://notes.zealon.cn/login/oauth2/callback/github&login=notes-user&scope&state="+timestamp+"&allow_signup=true";
+          location.href = url;
+        } else if(client=="weibo"){
+          url = "https://api.weibo.com/oauth2/authorize?client_id=922586374&redirect_uri=http://notes.zealon.cn/login/oauth2/callback/weibo&response_type=code";
           location.href = url;
         } else {
           this.$message.info(client + '开发者应用审核中，后续实现该社交登录哦~');

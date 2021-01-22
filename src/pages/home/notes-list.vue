@@ -12,10 +12,11 @@
             <!--笔记列表-->
             <div :style="notesListStyle">
                 <a-list size="small" >
-                    <a-list-item class="notes-item" v-for="(item,index) in notesList" :index="index+''" :key="index" :style="itemStyle(item.id)">
+                    <a-list-item class="notes-item" v-for="(item,index) in notesList" :index="index+''" :key="index" :style="itemStyle(item.id)"
+                        @click="loadNotesInfo(item.id)" >
                         <div @mouseenter="onMouseoverEnvDelBtn($event)" @mouseleave="onMouseleaveEnvDelBtn($event)">
                             <div class="title">
-                                <a @click="loadNotesInfo(item.id)" >
+                                <a >
                                     <my-icon v-if="item.type=='markdown'" type="icon-markdown" style="font-size: 10px;" />
                                     <my-icon v-else type="icon-wenben" style="font-size: 10px;" />    
                                     <a-tooltip v-if="item.title.length > 12" :key="item.title" :title="item.title">
